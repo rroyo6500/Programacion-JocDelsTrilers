@@ -9,7 +9,7 @@ class JError extends JFrame {
     public JError(String mensaje) {
         setLayout(new GridBagLayout());
         setTitle("Error");
-        setBounds(0, 0, mensaje.length() * 10, 100);
+        setBounds(0, 0, mensaje.length() * 15, 100);
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);

@@ -2,9 +2,12 @@ package TrilersRobertRoyo;
 
 public class Players {
 
+    public static int playerCount = 2;
+
     public static String[] playerNames = new String[2];
     public static int[] playerPoints = new int[2];
     public static int[] playerSelection = new int[2];
+    public static int playingPlayer = 1;
 
     public static String getPlayerName(int player){
         return playerNames[player-1];
