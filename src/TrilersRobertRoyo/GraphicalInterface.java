@@ -2,37 +2,89 @@ package TrilersRobertRoyo;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.Override;
 
 public class GraphicalInterface extends JFrame {
 
-    public static JPanel panel = new JPanel(){
+    public static JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER)){
         @Override
         public void paint(Graphics g){
             super.paint(g);
 
+
             g.setColor(Color.gray);
-            for (Polygon t : Tazones.tazones) g.fillPolygon(t);
+            for (Polygon t : Tazones.tazones) {
+                if (TrilersRobertRoyo.Override.o(Mouse.getMousePosition(), t)) {
+                    if (Mouse.isClicked) g.setColor(Color.yellow);
+                    else g.setColor(Color.cyan);
+                }
+                else g.setColor(Color.gray);
+                g.fillPolygon(t);
+            }
+
+            panel.repaint();
+
 
         }
     };
 
     public static void GameInterface(){
-        JFrame gi = new JFrame();
-        gi.setLayout(null);
-        gi.setTitle("Juego del Trilero");
-        gi.setBounds(0, 0, 1000, 500);
-        gi.setResizable(false);
-        gi.setLocationRelativeTo(null);
-        gi.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gi.setVisible(true);
-
         Tazones.crearTazones(new int[]{200, 500, 800}, 200);
 
-        panel.setBounds(0,0,gi.getWidth(),gi.getHeight());
-        panel.setLayout(null);
-        gi.add(panel);
-        panel.repaint();
+        // Ventana para las tazas
 
+        JFrame it = new JFrame();
+        //it.setLayout(null);
+        it.setTitle("Juego del Trilero");
+        it.setBounds(0, 0, 1000, 500);
+        it.setResizable(false);
+        it.setLocationRelativeTo(null);
+        it.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Mouse.configureMouse(it);
+
+        panel.setBounds(0,0,it.getWidth(),it.getHeight());
+        it.add(panel);
+
+        JLabel playingPlayer = new JLabel("", SwingConstants.CENTER);
+        playingPlayer.setText("Turno de: " + Players.getPlayerName(Players.playingPlayer));
+        panel.add(playingPlayer);
+
+        // Ventana de informacion
+
+        JFrame ii = new JFrame();
+        ii.setLayout(new BoxLayout(ii.getContentPane(), BoxLayout.X_AXIS));
+        ii.setTitle("Juego del Trilero");
+        ii.setBounds(0, 0, 500, 150);
+        ii.setResizable(false);
+        ii.setLocationRelativeTo(null);
+        ii.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel p1 = new JPanel();
+        p1.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.cyan, 2), Players.getPlayerName(1) + " (Jugador 1)")
+        );
+        ii.add(p1);
+
+        {
+            JLabel points = new JLabel("Puntos: " + Players.getPlayerPoints(1));
+            points.setBounds(10, 20, 50, 20);
+            p1.add(points);
+        }
+
+        JPanel p2 = new JPanel();
+        p2.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.red, 2), Players.getPlayerName(2) + " (Jugador 2)")
+        );
+        ii.add(p2);
+
+        {
+            JLabel points = new JLabel("Puntos: " + Players.getPlayerPoints(1));
+            points.setBounds(10, 20, 50, 20);
+            p2.add(points);
+        }
+
+        it.setVisible(true);
+        ii.setVisible(true);
     }
 
     public GraphicalInterface () {
@@ -105,7 +157,7 @@ public class GraphicalInterface extends JFrame {
                 String userName = name.getText();
                 if (userName.isBlank()) return;
 
-                Players.setPlayerName(1, userName);
+                Players.setPlayerName(2, userName);
                 p2.setVisible(false);
 
                 Players.playerCount--;

@@ -17,7 +17,6 @@ class JError extends JFrame {
         setFocusable(true);
         requestFocus();
         addKeyListener(new KeyAdapter() {
-            @Override
             public void keyPressed(KeyEvent e) {
                 super.keyPressed(e);
                 setVisible(false);
