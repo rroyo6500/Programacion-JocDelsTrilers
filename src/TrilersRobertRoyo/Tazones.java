@@ -71,60 +71,64 @@ public class Tazones {
             case 3 -> oval_premio = new Rectangle(centrosX[2] - 50, centroY, 100, 100);
         }
 
-        new Thread(() -> {
-            while (centroY > 100) {
-                try {
-                    centroY -= 10;
-                    tazones.clear();
-                    for (int i = 0; i < 3; i++) {
-                        int[] X = {
-                                defaultPolygon[0][0] + centrosX[i],
-                                defaultPolygon[0][1] + centrosX[i],
-                                defaultPolygon[0][2] + centrosX[i],
-                                defaultPolygon[0][3] + centrosX[i]
-                        };
-                        int[] Y = {
-                                defaultPolygon[1][0] + centroY,
-                                defaultPolygon[1][1] + centroY,
-                                defaultPolygon[1][2] + centroY,
-                                defaultPolygon[1][3] + centroY
-                        };
-                        tazones.add(new Polygon(X, Y, 4));
-                    }
-
-                    Thread.sleep(1000/30);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+        while (centroY > 125) {
+            try {
+                centroY -= 10;
+                tazones.clear();
+                for (int i = 0; i < 3; i++) {
+                    int[] X = {
+                            defaultPolygon[0][0] + centrosX[i],
+                            defaultPolygon[0][1] + centrosX[i],
+                            defaultPolygon[0][2] + centrosX[i],
+                            defaultPolygon[0][3] + centrosX[i]
+                    };
+                    int[] Y = {
+                            defaultPolygon[1][0] + centroY,
+                            defaultPolygon[1][1] + centroY,
+                            defaultPolygon[1][2] + centroY,
+                            defaultPolygon[1][3] + centroY
+                    };
+                    tazones.add(new Polygon(X, Y, 4));
                 }
+
+                Thread.sleep(1000/30);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
+        }
 
-            while (centroY <= 200) {
-                try {
-                    centroY += 10;
-                    tazones.clear();
-                    for (int i = 0; i < 3; i++) {
-                        int[] X = {
-                                defaultPolygon[0][0] + centrosX[i],
-                                defaultPolygon[0][1] + centrosX[i],
-                                defaultPolygon[0][2] + centrosX[i],
-                                defaultPolygon[0][3] + centrosX[i]
-                        };
-                        int[] Y = {
-                                defaultPolygon[1][0] + centroY,
-                                defaultPolygon[1][1] + centroY,
-                                defaultPolygon[1][2] + centroY,
-                                defaultPolygon[1][3] + centroY
-                        };
-                        tazones.add(new Polygon(X, Y, 4));
-                    }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
-                    Thread.sleep(1000/30);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+        while (centroY <= 200) {
+            try {
+                centroY += 10;
+                tazones.clear();
+                for (int i = 0; i < 3; i++) {
+                    int[] X = {
+                            defaultPolygon[0][0] + centrosX[i],
+                            defaultPolygon[0][1] + centrosX[i],
+                            defaultPolygon[0][2] + centrosX[i],
+                            defaultPolygon[0][3] + centrosX[i]
+                    };
+                    int[] Y = {
+                            defaultPolygon[1][0] + centroY,
+                            defaultPolygon[1][1] + centroY,
+                            defaultPolygon[1][2] + centroY,
+                            defaultPolygon[1][3] + centroY
+                    };
+                    tazones.add(new Polygon(X, Y, 4));
                 }
+
+                Thread.sleep(1000/30);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-            inAnimation = false;
-        }).start();
+        }
+        inAnimation = false;
 
     }
 
