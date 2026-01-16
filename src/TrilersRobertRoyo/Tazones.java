@@ -1,13 +1,11 @@
 package TrilersRobertRoyo;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Tazones {
-
-    public static Polygon[] tazones = new Polygon[3];
-    public static int[] _centrosX = new int[3];
-    public static int centroY = 0;
-    public static int tazonPremiado = 0;
 
     public static int[][] defaultPolygon = {
             // X
@@ -22,41 +20,39 @@ public class Tazones {
             {0, 0}
     };
 
-    public static void crearTazones (int[] centrosX, int Y) {
-        _centrosX = centrosX;
-        centroY = Y;
-        for (int i = 0; i < centrosX.length; i++) {
-            int[] x = {
+    public static List<Polygon> tazones = new ArrayList<>();
+    public static int[] centrosX = new int[3];
+    public static int centroY = 0;
+
+    public static int tazonPremiado = mezclar(10);
+
+    public static void crearTazones(int[] centrosX, int centroY) {
+        Tazones.centrosX = centrosX;
+        Tazones.centroY = centroY;
+
+        for (int i = 0; i < 3; i++) {
+            int[] X = {
                     defaultPolygon[0][0] + centrosX[i],
                     defaultPolygon[0][1] + centrosX[i],
                     defaultPolygon[0][2] + centrosX[i],
                     defaultPolygon[0][3] + centrosX[i]
             };
-            int[] y = {
-                    defaultPolygon[1][0] + Y,
-                    defaultPolygon[1][1] + Y,
-                    defaultPolygon[1][2] + Y,
-                    defaultPolygon[1][3] + Y
+            int[] Y = {
+                    defaultPolygon[1][0] + centroY,
+                    defaultPolygon[1][1] + centroY,
+                    defaultPolygon[1][2] + centroY,
+                    defaultPolygon[1][3] + centroY
             };
-            tazones[i] = new Polygon(x, y, 4);
+            tazones.add(new Polygon(X, Y, 4));
         }
     }
 
-    public static void intercambiarTazones (int t1, int t2) {
-
-        Polygon[] temp = {tazones[t1-1], tazones[t2-1]};
-
-        boolean T1_greater_T2 = tazones[t1-1].getBounds().x > tazones[t2-1].getBounds().x;
-
-        try {
-
-
-
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+    public static int mezclar (int repeticiones) {
+        int r = 0;
+        for (int i = 0; i < repeticiones; i++) {
+            r = new Random().nextInt(3);
         }
-
+        return r;
     }
 
 }

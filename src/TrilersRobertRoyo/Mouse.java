@@ -14,6 +14,7 @@ public class Mouse {
 
     public static void configureMouse(Component component) {
         component.addMouseMotionListener(new MouseAdapter() {
+            @Override
             public void mouseMoved(MouseEvent e) {
                 super.mouseMoved(e);
                 mouseX = e.getX();
@@ -22,10 +23,12 @@ public class Mouse {
         });
 
         component.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
                 isClicked = true;
             }
+            @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
                 isClicked = false;
@@ -34,9 +37,7 @@ public class Mouse {
     }
 
     public static void addConfig(Component component, MouseAdapter ma) {
-
         component.addMouseListener(ma);
-
     }
 
     public static int[] getMousePosition() {

@@ -4,9 +4,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //GraphicalInterface.GameInterface();
+        GraphicalInterface.GameInterface();
+        //new GraphicalInterface();
 
-        new GraphicalInterface();
     }
 
 }
