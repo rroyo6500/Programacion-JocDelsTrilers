@@ -7,8 +7,7 @@ import java.lang.Override;
 
 public class Mouse {
 
-    public static int mouseX = 0;
-    public static int mouseY = 0;
+    public static int[] mousePosition = new int[2];
 
     public static boolean isClicked = false;
 
@@ -17,8 +16,7 @@ public class Mouse {
             @Override
             public void mouseMoved(MouseEvent e) {
                 super.mouseMoved(e);
-                mouseX = e.getX();
-                mouseY = e.getY();
+                mousePosition = new int[] {e.getX(), e.getY()};
             }
         });
 
@@ -38,10 +36,6 @@ public class Mouse {
 
     public static void addConfig(Component component, MouseAdapter ma) {
         component.addMouseListener(ma);
-    }
-
-    public static int[] getMousePosition() {
-        return new int[] {mouseX, mouseY};
     }
 
 }

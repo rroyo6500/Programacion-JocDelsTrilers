@@ -4,8 +4,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        GraphicalInterface.GameInterface();
-        //new GraphicalInterface();
+        //GraphicalInterface.win("Rroyo", 10);
+        //GraphicalInterface.GameInterface();
+        new GraphicalInterface();
 
     }
 

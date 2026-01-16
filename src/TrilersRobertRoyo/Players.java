@@ -5,7 +5,7 @@ public class Players {
     public static int playerCount = 2;
 
     public static String[] playerNames = new String[2];
-    public static int[] playerPoints = new int[2];
+    public static int[] playerPoints = {0, 0};
     public static int[] playerSelection = new int[2];
     public static int playingPlayer = 1;
 

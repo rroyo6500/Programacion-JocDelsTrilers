@@ -2,6 +2,8 @@ package TrilersRobertRoyo;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.Override;
@@ -10,28 +12,47 @@ public class GraphicalInterface extends JFrame {
 
     public static JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER)){
         @Override
-        public void paint(Graphics g){
-            super.paint(g);
+        public void paintComponent(Graphics g){
+            super.paintComponent(g);
 
-
-            g.setColor(Color.gray);
-            for (Polygon t : Tazones.tazones) {
-                if (Overlap.o(Mouse.getMousePosition(), t))
-                    g.setColor(Color.cyan);
-                else g.setColor(Color.gray);
-                g.fillPolygon(t);
+            if (Tazones.oval_premio != null) {
+                g.setColor(Color.GREEN);
+                g.fillOval(Tazones.oval_premio.x, Tazones.oval_premio.y, Tazones.oval_premio.width, Tazones.oval_premio.height);
             }
 
-            panel.repaint();
+            java.util.List<Polygon> copiaTazones;
+            synchronized (Tazones.tazones) {
+                copiaTazones = new java.util.ArrayList<>(Tazones.tazones);
+            }
+
+            for (Polygon t : copiaTazones) {
+                if (Overlap.o(Mouse.mousePosition, t) && !Tazones.inAnimation) {
+                    if (Players.playingPlayer == 1) g.setColor(Color.cyan);
+                    else if (Players.playingPlayer == 2) g.setColor(Color.red);
+                } else g.setColor(Color.gray);
+                g.fillPolygon(t);
+            }
         }
     };
+
+    public static JFrame ii;
+    public static JFrame it;
+
+    public static JLabel pointsP1;
+    public static JLabel pointsP2;
+    public static JLabel playingPlayer;
 
     public static void GameInterface(){
         Tazones.crearTazones(new int[]{200, 500, 800}, 200);
 
+        //Timer
+
+        Timer refreshTimer = new Timer(1000/60, _ -> panel.repaint());
+        refreshTimer.start();
+
         // Ventana de informacion
 
-        JFrame ii = new JFrame();
+        ii = new JFrame();
         ii.setLayout(new BoxLayout(ii.getContentPane(), BoxLayout.X_AXIS));
         ii.setTitle("Juego del Trilero");
         ii.setBounds(0, 0, 500, 150);
@@ -45,7 +66,7 @@ public class GraphicalInterface extends JFrame {
         );
         ii.add(p1);
 
-        JLabel pointsP1 = new JLabel("Puntos: " + Players.getPlayerPoints(1));
+        pointsP1 = new JLabel("Puntos: " + Players.getPlayerPoints(1));
         pointsP1.setBounds(10, 20, 50, 20);
         p1.add(pointsP1);
 
@@ -55,13 +76,13 @@ public class GraphicalInterface extends JFrame {
         );
         ii.add(p2);
 
-        JLabel pointsP2 = new JLabel("Puntos: " + Players.getPlayerPoints(1));
+        pointsP2 = new JLabel("Puntos: " + Players.getPlayerPoints(1));
         pointsP2.setBounds(10, 20, 50, 20);
         p2.add(pointsP2);
 
         // Ventana para las tazas
 
-        JFrame it = new JFrame();
+        it = new JFrame();
         //it.setLayout(null);
         it.setTitle("Juego del Trilero");
         it.setBounds(0, 0, 1000, 500);
@@ -73,13 +94,20 @@ public class GraphicalInterface extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                if (Tazones.inAnimation) return;
 
-                int x = e.getX();
-                int y = e.getY();
+                Mouse.mousePosition = new int[]{e.getX(), e.getY()};
 
-                for (Polygon t : Tazones.tazones) {
-                    if (Overlap.o(new int[]{x, y}, t)) {
+                // Create a copy to avoid ConcurrentModificationException if logic modifies the list
+                java.util.List<Polygon> snapshot;
+                synchronized (Tazones.tazones) {
+                    snapshot = new java.util.ArrayList<>(Tazones.tazones);
+                }
+
+                for (Polygon t : snapshot) {
+                    if (Overlap.o(Mouse.mousePosition, t)) {
                         Players.setPlayerSelection(Players.playingPlayer, Tazones.tazones.indexOf(t) + 1);
+                        LogigaPrincipal.comprobarAcierto();
                     }
                 }
 
@@ -89,7 +117,7 @@ public class GraphicalInterface extends JFrame {
         panel.setBounds(0,0,it.getWidth(),it.getHeight());
         it.add(panel);
 
-        JLabel playingPlayer = new JLabel("", SwingConstants.CENTER);
+        playingPlayer = new JLabel("", SwingConstants.CENTER);
         playingPlayer.setText("Turno de: " + Players.getPlayerName(Players.playingPlayer));
         panel.add(playingPlayer);
 
@@ -189,6 +217,38 @@ public class GraphicalInterface extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    public static void win(String name, int points) {
+        JFrame win = new JFrame();
+        win.setLayout(null);
+        win.setBounds(0, 0, 400, 125);
+        win.setLocationRelativeTo(null);
+        win.setTitle("Juego del Trilero - Victoria para: " + name);
+        win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        win.setVisible(true);
+        win.setFocusable(true);
+        win.requestFocus();
+        win.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    System.exit(0);
+                }
+            }
+        });
+
+        JLabel text = new JLabel("¡FELICIDADES!");
+        text.setBounds(0, 20, 400, 25);
+        text.setHorizontalAlignment(JLabel.CENTER);
+        win.add(text);
+
+        JLabel text2 = new JLabel("Ha ganado " + name + " con " + points + " puntos.");
+        text2.setBounds(0, 50, 400, 25);
+        text2.setHorizontalAlignment(JLabel.CENTER);
+        win.add(text2);
     }
 
 }
