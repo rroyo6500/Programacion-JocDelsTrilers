@@ -193,18 +193,24 @@ public class GraphicalInterface extends JFrame {
             name.setBorder(BorderFactory.createLineBorder(Color.black));
             p2.add(name);
 
+            JCheckBox chekboxIA = new JCheckBox("Jugador IA");
+            chekboxIA.setBounds(10, 75, 270, 20);
+            chekboxIA.setBorder(BorderFactory.createLineBorder(Color.black));
+            p2.add(chekboxIA);
+
             JButton addPlayer = new JButton("Añadir");
             addPlayer.setBounds(10, 100, 270, 50);
             addPlayer.setBackground(Color.green);
             addPlayer.setBorder(BorderFactory.createLineBorder(Color.black));
             addPlayer.addActionListener(_ -> {
                 String userName = name.getText();
-                if (userName.isBlank()) return;
 
-                Players.setPlayerName(2, userName);
-                p2.setVisible(false);
+                if (!chekboxIA.isSelected()) {
+                    if (userName.isBlank()) return;
 
-                IA.setIA(2);
+                    Players.setPlayerName(2, userName);
+                    p2.setVisible(false);
+                } else IA.setIA();
 
                 Players.playerCount--;
                 if (Players.playerCount == 0) {
