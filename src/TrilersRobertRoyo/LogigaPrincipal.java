@@ -3,6 +3,7 @@ package TrilersRobertRoyo;
 public class LogigaPrincipal {
 
     public static void comprobarAcierto() {
+        if (GraphicalInterface.win) return;
 
         new Thread(Tazones::revelarPremio).start();
 
@@ -18,7 +19,6 @@ public class LogigaPrincipal {
                 GraphicalInterface.it.dispose();
             }
         }
-        Tazones.tazonPremiado = Tazones.mezclar(10);
         Players.playingPlayer = 3 - Players.playingPlayer;
 
         GraphicalInterface.playingPlayer.setText("Turno de: " + Players.getPlayerName(Players.playingPlayer));

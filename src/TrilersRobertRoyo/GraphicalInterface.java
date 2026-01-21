@@ -18,6 +18,8 @@ public class GraphicalInterface extends JFrame {
             if (Tazones.oval_premio != null) {
                 g.setColor(Color.GREEN);
                 g.fillOval(Tazones.oval_premio.x, Tazones.oval_premio.y, Tazones.oval_premio.width, Tazones.oval_premio.height);
+                g.setColor(Color.BLACK);
+                g.drawOval(Tazones.oval_premio.x, Tazones.oval_premio.y, Tazones.oval_premio.width, Tazones.oval_premio.height);
             }
 
             java.util.List<Polygon> copiaTazones;
@@ -31,7 +33,10 @@ public class GraphicalInterface extends JFrame {
                     else if (Players.playingPlayer == 2) g.setColor(Color.red);
                 } else g.setColor(Color.gray);
                 g.fillPolygon(t);
+                g.setColor(Color.black);
+                g.drawPolygon(t);
             }
+
         }
     };
 
@@ -43,7 +48,7 @@ public class GraphicalInterface extends JFrame {
     public static JLabel playingPlayer;
 
     public static void GameInterface(){
-        Tazones.crearTazones(new int[]{200, 500, 800}, 200);
+        Tazones.crearTazones(new int[]{200, 500, 800}, 250);
 
         //Timer
 
@@ -98,7 +103,6 @@ public class GraphicalInterface extends JFrame {
 
                 Mouse.mousePosition = new int[]{e.getX(), e.getY()};
 
-                // Create a copy to avoid ConcurrentModificationException if logic modifies the list
                 java.util.List<Polygon> snapshot;
                 synchronized (Tazones.tazones) {
                     snapshot = new java.util.ArrayList<>(Tazones.tazones);
@@ -200,6 +204,8 @@ public class GraphicalInterface extends JFrame {
                 Players.setPlayerName(2, userName);
                 p2.setVisible(false);
 
+                IA.setIA(2);
+
                 Players.playerCount--;
                 if (Players.playerCount == 0) {
                     setVisible(false);
@@ -219,7 +225,10 @@ public class GraphicalInterface extends JFrame {
         setVisible(true);
     }
 
+
+    public static boolean win = false;
     public static void win(String name, int points) {
+        win = true;
         JFrame win = new JFrame();
         win.setLayout(null);
         win.setBounds(0, 0, 400, 125);
