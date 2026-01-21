@@ -36,6 +36,7 @@ public class Mouse {
 
     public static void addConfig(Component component, MouseAdapter ma) {
         component.addMouseListener(ma);
+        component.addMouseMotionListener(ma);
     }
 
 }

@@ -222,7 +222,6 @@ public class GraphicalInterface extends JFrame {
             p2.add(addPlayer);
         }
 
-
         setTitle("Juego del Trilero - Seleccion de Jugadores");
         setBounds(0, 0, 600, 200);
         setResizable(false);
